@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+</head>
+<body>
+
+<h1>Admin Dashboard</h1>
+
+<!-- Form for Admin Login -->
+<form id="loginForm">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required>
+    <br>
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" required>
+    <br>
+    <button type="button" onclick="login()">Login</button>
+</form>
+
+<!-- Display Cars -->
+<h2>All Cars</h2>
+<ul id="carList"></ul>
+
+<script>
+    // Function to handle admin login
+    function login() {
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        fetch('http://localhost:8081/admins/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `username=${username}&password=${password}`,
+        })
+            .then(response => response.text())
+            .then(token => {
+                alert(`Login successful! Token: ${token}`);
+            })
+            .catch(error => {
+                alert('Login failed. Invalid credentials.');
+            });
+    }
+
+    // Function to fetch all cars
+    function fetchAllCars() {
+        fetch('http://localhost:8081/admins/cars')
+            .then(response => response.json())
+            .then(cars => {
+                const carList = document.getElementById('carList');
+                carList.innerHTML = ''; // Clear existing list
+
+                cars.forEach(car => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `${car.id}: ${car.brand} - ${car.model}`;
+                    carList.appendChild(listItem);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching cars:', error);
+            });
+    }
+
+    // Fetch all cars when the page loads
+    fetchAllCars();
+</script>
+
+</body>
+</html>
