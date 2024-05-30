@@ -44,7 +44,7 @@ jobs:
         uses: azure/login@v1
         with:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_F3FC3C0188564EBE8B5FED90789CB17A }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_B81D731A2F754A4BA4076C2439B5DA05 }}
+          tenant-id:  ${{ secrets.AZUREAPPSERVICE_TENANTID_B81D731A2F754A4BA4076C2439B5DA05 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_0CD973DB4FA64FEC959823AE12FC8800 }}
 
       - name: Deploy to Azure Web App
@@ -52,6 +52,6 @@ jobs:
         with:
           app-name: 'backendcar'
           slot-name: 'Production'
-          package: ${{ github.workspace }}/target/*.jar # Reference the downloaded JAR artifact here
+          package: '*.jar'
 
           
